@@ -1,0 +1,36 @@
+# Apache Configuration - TOKO FHIKA
+# Aktif saat deploy di Apache (XAMPP/WAMP/Laragon)
+
+# Cegah directory listing
+Options -Indexes
+
+# Set charset default
+AddDefaultCharset UTF-8
+
+# Proteksi file sensitif dari akses langsung
+<FilesMatch "^(koneksi|\.env|composer\.lock)">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Redirect ke index.php jika file tidak ditemukan (opsional)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Redirect www ke non-www (aktifkan jika perlu)
+    # RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+    # RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+# Cegah akses ke file backup
+<FilesMatch "\.(sql|bak|log|sh|py)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# PHP settings (jika server mendukung)
+<IfModule mod_php.c>
+    php_value upload_max_filesize 5M
+    php_value post_max_size 6M
+    php_value max_execution_time 60
+    php_value session.cookie_httponly 1
+</IfModule>
